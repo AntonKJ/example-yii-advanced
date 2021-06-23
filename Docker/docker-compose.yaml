@@ -1,0 +1,74 @@
+version: '3'
+
+services:
+  app:
+    container_name: app-yii2-advanced
+    build: ./
+    volumes:
+      - ../:/home/yii2-advanced
+    depends_on:
+      - sqlite3
+      - mariadb
+      - redis
+
+  nginx:
+    container_name: nginx-yii2-advanced
+    image: nginx:1.13
+    ports:
+      - 80:80
+    volumes:
+      - ../:/home/yii2-advanced
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - php
+
+  php:
+    container_name: php74-yii2-advanced
+    image: php:7.4-fpm
+    volumes:
+      - ../:/home/yii2-advanced
+      - ./phpini/php-ini/php.ini:/usr/local/etc/php/conf.d/php.ini
+
+  mariadb:
+    container_name: mariadb-yii2-advanced
+    image: mariadb:10.5
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpwd6421
+
+  phpmyadmin:
+    container_name: phpmyadmin-yii2-advanced
+    image: phpmyadmin/phpmyadmin
+    links:
+      - mariadb:db
+    ports:
+      - 8765:80
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpwd6421
+      UPLOAD_LIMIT: 300000000
+    depends_on:
+      - mariadb
+
+  sqlite3:
+    container_name: sqlite-yii2-advanced
+    image: nouchka/sqlite3:latest
+    stdin_open: true
+    tty: true
+    environment:
+      SQLITE_USER: root
+      SQLITE_PASSWORD: changeme
+      SQLITE_DB: mydb
+    ports:
+      - '9000:9000' # expose ports - HOST:CONTAINER
+    restart: unless-stopped
+
+  adminer:
+    container_name: adminer-yii2-advanced
+    image: adminer
+    restart: always
+
+    ports:
+      - 8080:8080
+
+  redis:
+    container_name: redis-yii2-advanced
+    image: redis
