@@ -1,3 +1,5 @@
+Тест выполнен до дополнительный требований, без них.
+
 Ссылки в http://backend.localhost/checkstatus/
 в http://backend.localhost/checkstatus/result-is-compared отсортированый список url, status 
 <br> проверить все урлы http://backend.localhost/checkstatus/rest-check-urls
