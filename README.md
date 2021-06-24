@@ -33,6 +33,7 @@ http://backend.localhost/checkstatus/rest-check-urls?aurl=https://github.com/Ant
 user: Webmaster pass: Webmaster (admin)
 user: Webmaster1 pass: Webmaster1 (user)
 ```
+Если сами создаете БД то 
 Установка БД выполнить все миграции ```php yii migrate```
 Cоздание пользователей RBAC
 ```
