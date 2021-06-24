@@ -25,7 +25,11 @@ http://backend.localhost/checkstatus/rest-check-urls
 ```
 http://backend.localhost/checkstatus/rest-check-urls?aurl=https://github.com/AntonKJ/
 ```
-Дабы не создавать БД она в проекте 
+Дабы не создавать БД она в проекте
+
+Пользователи в RBAC
+user: Webmaster pass: Webmaster (admin)
+user: Webmaster1 pass: Webmaster1 (user)
 
 Докер в папке Docker 
 оттуда выполнять docker-compose up -d
