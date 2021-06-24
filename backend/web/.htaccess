@@ -1,0 +1,2 @@
+RewriteEngine on
+RewriteRule ^checkstatus/$ http://backend.localhost/urls/ [R=301,L]
