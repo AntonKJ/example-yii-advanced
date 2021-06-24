@@ -29,19 +29,20 @@ http://backend.localhost/checkstatus/rest-check-urls?aurl=https://github.com/Ant
 Дабы не создавать БД она в проекте
 
 Пользователи в RBAC
+```
 user: Webmaster pass: Webmaster (admin)
 user: Webmaster1 pass: Webmaster1 (user)
-
-Установка БД выполнить все миграции php yii migrate
+```
+Установка БД выполнить все миграции ```php yii migrate```
 Cоздание пользователей RBAC
-
+```
 php yii rbac-user/init
 php yii rbac-admin-assign/init 1
+```
+Так, пользователь с ```id=1``` получит роль ```admin```.
 
-Так, пользователь с id=1 получит роль admin.
-
-Докер в папке Docker 
-оттуда выполнять docker-compose up -d
+Докер в папке ```Docker``` 
+оттуда выполнять ```docker-compose up -d```
 
 #==================#END#==================#
 
