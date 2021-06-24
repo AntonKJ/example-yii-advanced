@@ -9,7 +9,20 @@ use yii\helpers\Console;
 
 class CheckStatusController extends Controller
 {
+    /**
+     *
 
+        php yii check-status/statistics
+
+       {"codes":[{"url":"https:\/\/www.google.com\/","status_code":"200"},
+       {"url":"https:\/\/www.yiiframework.com\/doc\/api\/2.0\/yii-web-request","status_code":"200"},
+       {"url":"https:\/\/www.md5hashgenerator.com\/","status_code":"200"},
+       {"url":"https:\/\/github.com\/AntonKJ\/","status_code":"200"}]}
+
+       Done!
+
+     *
+     */
     public $modelClass = 'backend\models\AurlStatus';
 
     public function actionStatistics()
