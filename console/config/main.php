@@ -30,6 +30,9 @@ return [
                 ],
             ],
         ],
+        'user' => [
+            'class' => 'mdm\admin\models\User',
+        ],
     ],
     'params' => $params,
 ];

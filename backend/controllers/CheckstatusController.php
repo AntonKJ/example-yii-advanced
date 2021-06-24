@@ -90,7 +90,6 @@ class CheckstatusController extends ActiveController
 
     public function saveUpdates($data_save) {
         foreach ($data_save as $data_save_item) {
-
             if ( count($this->getArrayOnHash(md5($data_save_item['url']))) == 0 ) {
                 // var_dump($this->getArrayOnHash(md5($data_save_item['url'])));
                 $model = new AurlStatus();
@@ -110,6 +109,7 @@ class CheckstatusController extends ActiveController
                     ->execute();
             }
         }
+        \Yii::$app->getResponse()->redirect('/checkstatus/result-is-compared');
     }
 
     public function actionResultIsCompared () {
@@ -150,7 +150,7 @@ class CheckstatusController extends ActiveController
     }
 
     public function curlTest($url) {
-
+        error_reporting(0);
         // Создаём дескриптор cURL
         $ch = curl_init((string)$url);
 
