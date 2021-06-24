@@ -1,4 +1,4 @@
-Тест выполнен до дополнительный требований, без них.
+Тест выполнен до дополнительных требований, без них.
 
 Ссылки в http://backend.localhost/checkstatus/
 в http://backend.localhost/checkstatus/result-is-compared отсортированый список url, status 
