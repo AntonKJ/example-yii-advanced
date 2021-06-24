@@ -1,3 +1,5 @@
+Тест выполнен до дополнительных требований, без них.
+
 Ссылки в http://backend.localhost/checkstatus/
 в http://backend.localhost/checkstatus/result-is-compared отсортированый список url, status 
 <br> проверить все урлы http://backend.localhost/checkstatus/rest-check-urls
@@ -26,6 +28,19 @@ http://backend.localhost/checkstatus/rest-check-urls
 ```
 http://backend.localhost/checkstatus/rest-check-urls?aurl=https://github.com/AntonKJ/
 ```
+
+Консольный вывод Check Status - Statistics
+```
+  php yii check-status/statistics
+
+       {"codes":[{"url":"https:\/\/www.google.com\/","status_code":"200"},
+       {"url":"https:\/\/www.yiiframework.com\/doc\/api\/2.0\/yii-web-request","status_code":"200"},
+       {"url":"https:\/\/www.md5hashgenerator.com\/","status_code":"200"},
+       {"url":"https:\/\/github.com\/AntonKJ\/","status_code":"200"}]}
+
+  Done!
+```
+
 Дабы не создавать БД она в проекте
 
 Пользователи в RBAC
