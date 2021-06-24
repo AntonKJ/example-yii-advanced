@@ -32,6 +32,7 @@ class CheckStatusController extends Controller
         $result = $class->find()
              ->select(['url', 'status_code'])
              ->where(['=', 'status_code', '200'])
+             ->andWhere(['>=', 'updated_at', new Expression('UNIX_TIMESTAMP(NOW() - INTERVAL 1 DAY)')])
              ->asArray()
              ->all();
 
