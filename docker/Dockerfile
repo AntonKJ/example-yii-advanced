@@ -34,6 +34,8 @@ RUN apt-get purge -y g++ \
 
 RUN usermod -u 1000 www-data
 
+RUN docker-php-ext-install pdo_mysql
+
 RUN no|pecl install -o -f redis \
 &&  rm -rf /tmp/pear \
 &&  docker-php-ext-enable redis

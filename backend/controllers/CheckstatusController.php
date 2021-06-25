@@ -1,7 +1,7 @@
 <?php
 namespace backend\controllers;
 
-use backend\models\AurlStatus;
+use common\models\UrlStatus;
 use Yii;
 use yii\base\BaseObject;
 use yii\rest\ActiveController;
@@ -42,7 +42,7 @@ class CheckstatusController extends ActiveController
      *
      */
 
-    public $modelClass = 'backend\models\AurlStatus';
+    public $modelClass = 'common\models\UrlStatus';
 
     public function actions()
     {
@@ -92,7 +92,7 @@ class CheckstatusController extends ActiveController
         foreach ($data_save as $data_save_item) {
             if ( count($this->getArrayOnHash(md5($data_save_item['url']))) == 0 ) {
                 // var_dump($this->getArrayOnHash(md5($data_save_item['url'])));
-                $model = new AurlStatus();
+                $model = new UrlStatus();
                 $model->url = $data_save_item['url'];
                 $model->status_code = $data_save_item['status'];
                 $model->query_count = $data_save_item['query_count'];
@@ -109,7 +109,6 @@ class CheckstatusController extends ActiveController
                     ->execute();
             }
         }
-        \Yii::$app->getResponse()->redirect('/checkstatus/result-is-compared');
     }
 
     public function actionResultIsCompared () {
@@ -128,18 +127,22 @@ class CheckstatusController extends ActiveController
             $urls = [ 'url' => \Yii::$app->request->get()["aurl"] ];
             $query_count = [ 'query_count' =>  0 ];
         } else {
-            $urls = ArrayHelper::getColumn($this->getArrayAllUrls(), 'url');
-            $query_count = ArrayHelper::getColumn($this->getArrayAllUrls(), 'query_count');
+            // getAllUrls для проверки всех урлов
+            $get_urls = $this->getArrayAllUrls();
+            $urls = ArrayHelper::getColumn($get_urls, 'url');
+            $query_count = ArrayHelper::getColumn($get_urls, 'query_count');
         }
         $urls_data = [];
         $i = 0;
         foreach ($urls as $url ){
+            $curlTest = $this->curlTest($url);
             $urls_data[$i]['url'] = $url;
-            $urls_data[$i]['status'] = $this->curlTest($url)['status'];
-            $urls_data[$i]['time'] = $this->curlTest($url)['time'];
+            $urls_data[$i]['status'] = $curlTest['status'];
+            $urls_data[$i]['time'] = $curlTest['time'];
             $i++;
         }
 
+        // для увелечения счетчика общего количества запросов на 1
         $iq = 0;
         foreach ($query_count as $count) {
             $urls_data[$iq]['query_count'] = $count + 1;
@@ -147,17 +150,25 @@ class CheckstatusController extends ActiveController
         }
         $this->saveUpdates($urls_data);
         //var_dump($urls_data);
+        return $this->actionResultIsCompared();
     }
 
     public function curlTest($url) {
         error_reporting(0);
         // Создаём дескриптор cURL
         $ch = curl_init((string)$url);
+        $headers["User-Agent"] = "Curl/1.0";
+
+        curl_setopt($ch, CURLOPT_HEADER, false);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 5000); // время таймаута 5 сек.
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_USERPWD, 'php_check_url:');
 
         // Запускаем
-        curl_exec($ch);
+        $response = curl_exec($ch);
 
-        // Проверяем наличие ошибок
+        // Проверяем наличие ошибок и добавляем время
         if (!curl_errno($ch)) {
             $info = curl_getinfo($ch);
             //echo 'Прошло ', $info['total_time'], ' секунд во время запроса к ', $info['url'], "\n";
@@ -165,7 +176,7 @@ class CheckstatusController extends ActiveController
 
         $result= [];
 
-        // Проверяем наличие ошибок
+        // Возвращает код ошибки
         if (!curl_errno($ch)) {
             switch ($http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE)) {
                 case 200:

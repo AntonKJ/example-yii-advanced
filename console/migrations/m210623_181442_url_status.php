@@ -29,6 +29,7 @@ class m210623_181442_url_status extends Migration
 
     public function down()
     {
-        $this->dropTable('{{%url_status}}');
+        //$this->dropTable('{{%url_status}}');
+        return false;
     }
 }
