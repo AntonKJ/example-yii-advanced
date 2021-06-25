@@ -15,24 +15,21 @@ class CheckStatusController extends Controller
 
         php yii check-status/statistics
 
-       {"codes":[{"url":"https:\/\/www.google.com\/","status_code":"200"},
-       {"url":"https:\/\/www.yiiframework.com\/doc\/api\/2.0\/yii-web-request","status_code":"200"},
-       {"url":"https:\/\/www.md5hashgenerator.com\/","status_code":"200"},
-       {"url":"https:\/\/github.com\/AntonKJ\/","status_code":"200"}]}
+        {"codes":[{"url":"https:\/\/example.com\/page\/test","status_code":"404"}]}
 
-       Done!
+        Done!
 
      *
      */
-    public $modelClass = 'backend\models\AurlStatus';
 
     public function actionStatistics()
     {
         $class = new UrlStatus();
 
+        // вывод за последние 24 часа со статусом неравным 200
         $result = $class->find()
              ->select(['url', 'status_code'])
-             ->where(['=', 'status_code', '200'])
+             ->where(['!=', 'status_code', '200'])
              ->andWhere(['>=', 'updated_at', new Expression('UNIX_TIMESTAMP(NOW() - INTERVAL 1 DAY)')])
              ->asArray()
              ->all();
