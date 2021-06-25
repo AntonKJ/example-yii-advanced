@@ -21,7 +21,6 @@ class CheckStatusController extends Controller
 
      *
      */
-    public $modelClass = 'backend\models\AurlStatus';
 
     public function actionStatistics()
     {
