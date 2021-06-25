@@ -157,13 +157,13 @@ class CheckstatusController extends ActiveController
         error_reporting(0);
         // Создаём дескриптор cURL
         $ch = curl_init((string)$url);
-        $headers["User-Agent"] = "Curl/1.0";
+        $headers["User-Agent"] = Yii::$app->params['curl.User-Agent'];
 
         curl_setopt($ch, CURLOPT_HEADER, false);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 5000); // время таймаута 5 сек.
+        curl_setopt($ch, CURLOPT_TIMEOUT, Yii::$app->params['curl.Timeout']); // время таймаута 5 сек.
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_USERPWD, 'php_check_url:');
+        curl_setopt($ch, CURLOPT_USERPWD, Yii::$app->params['curl.Userpwd']);
 
         // Запускаем
         $response = curl_exec($ch);

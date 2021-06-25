@@ -29,8 +29,8 @@ class CheckStatusController extends Controller
         // вывод за последние 24 часа со статусом неравным 200
         $result = $class->find()
              ->select(['url', 'status_code'])
-             ->where(['!=', 'status_code', '200'])
-             ->andWhere(['>=', 'updated_at', new Expression('UNIX_TIMESTAMP(NOW() - INTERVAL 1 DAY)')])
+             ->where(['!=', 'status_code', Yii::$app->params['check.status.console.status']])
+             ->andWhere(['>=', 'updated_at', new Expression('UNIX_TIMESTAMP('.Yii::$app->params['check.status.console.last.time'].')')])
              ->asArray()
              ->all();
 
